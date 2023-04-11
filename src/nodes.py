@@ -3,8 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from src.protocols import File
-
 
 class Node:
     def __init__(self, name: str, parent: Optional[Directory] = None) -> None:
@@ -18,11 +16,12 @@ class Node:
         self.name = new_name
         self.update_modified()
 
-    def get_path(self) -> str:
+    @property
+    def path(self) -> str:
         """Get the path of this file system object."""
         if self.parent is None:
             return f"/{self.name}"
-        return f"{self.parent.get_path()}/{self.name}"
+        return f"{self.parent.path}/{self.name}"
 
     @property
     def created(self) -> datetime:
@@ -42,7 +41,7 @@ class Node:
         return f"Node({self.name}, parent={self.parent})"
 
     def __str__(self) -> str:
-        return self.get_path()
+        return self.path
 
 
 class Directory(Node):
@@ -50,3 +49,28 @@ class Directory(Node):
         super().__init__(name, parent)
         self.files: list[File] = []
         self.subdirectories: list[Directory] = []
+
+    def add_file(self, file: File) -> None:
+        """Add a file to this directory."""
+        self.files.append(file)
+
+    def add_directory(self, directory: Directory) -> None:
+        """Add a directory to this directory."""
+        self.subdirectories.append(directory)
+
+
+class File(Node):
+    def __init__(self, name: str, parent: Optional[Directory] = None) -> None:
+        super().__init__(name, parent)
+        self.content = ""
+
+    def read(self) -> str:
+        return self.content
+
+    def write(self, content: str) -> None:
+        self.content = content
+        self.update_modified()
+
+    def append(self, content: str) -> None:
+        self.content += content
+        self.update_modified()
