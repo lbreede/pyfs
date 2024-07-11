@@ -16,21 +16,27 @@ class FileSystem:
 
     def mkdir(self, name: str) -> Directory:
         """Create a new directory in the current directory."""
-        logger.debug("Creating directory %r in %r", name, self.current_directory.path)
+        logger.debug(
+            "Creating directory %r in %r", name, self.current_directory.path
+        )
         directory = Directory(name, self.current_directory)
         self.current_directory.add_directory(directory)
         return directory
 
     def touch(self, name: str) -> File:
         """Create a new file in the current directory."""
-        logger.debug("Creating file %r in %r", name, self.current_directory.path)
+        logger.debug(
+            "Creating file %r in %r", name, self.current_directory.path
+        )
         file = File(name, self.current_directory)
         self.current_directory.add_file(file)
         return file
 
     def ls(self) -> None:
         """List the files and directories in the current directory."""
-        logger.debug("Listing files and directories in %r", self.current_directory.path)
+        logger.debug(
+            "Listing files and directories in %r", self.current_directory.path
+        )
         for file in self.current_directory.files:
             print(file.name)
         for directory in self.current_directory.subdirectories:

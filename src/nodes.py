@@ -2,6 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 
 class Node:
@@ -13,6 +20,7 @@ class Node:
 
     def rename(self, new_name: str) -> None:
         """Rename this file system object and update the modified time."""
+        logger.debug(f"Renaming {self} to {new_name}")
         self.name = new_name
         self.update_modified()
 
@@ -65,12 +73,26 @@ class File(Node):
         self.content = ""
 
     def read(self) -> str:
+        """Read the content of this file."""
         return self.content
 
     def write(self, content: str) -> None:
+        """Write the content of this file."""
         self.content = content
         self.update_modified()
 
     def append(self, content: str) -> None:
+        """Append the content of this file."""
         self.content += content
         self.update_modified()
+
+
+def main() -> None:
+    f0 = File("f0")
+    f1 = File("f1")
+    print(f1)
+    f1.rename("f2")
+
+
+if __name__ == "__main__":
+    main()
