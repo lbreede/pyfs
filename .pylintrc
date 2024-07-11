@@ -1,4 +1,4 @@
 [MASTER]
 disable=missing-function-docstring, missing-class-docstring, missing-module-docstring
 [FORMAT]
-good-names=fs, ls, cd 
+good-names=fs, ls, cd, a, b, c, n, x, y
